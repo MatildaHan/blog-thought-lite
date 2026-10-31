@@ -41,12 +41,19 @@ const { Content, remarkPluginFrontmatter: frontmatter } = await render(jotting);
 const t = i18nit(locale);
 ---
 
-<Base title={jotting.data.title} {locale} description={jotting.data.description} article={{ timestamp: jotting.data.timestamp, tags: jotting.data.tags }}>
+<Base title={jotting.data.title} {locale} description={jotting.data.description} article={{ timestamp: jotting.data.timestamp, section: jotting.data.series, tags: jotting.data.tags }}>
 	<main class="flex flex-col gap-6">
 		<header class="flex flex-col gap-4">
 			<h1 class="select-text">{jotting.data.title}</h1>
 			<div class="flex flex-col gap-3 sm:flex-row *:flex *:items-center *:gap-1 *:text-[0.875rem] *:text-secondary">
 				<time datetime={jotting.data.timestamp.toISOString()}><Icon name="lucide--calendar" />{Time.toString(jotting.data.timestamp)}</time>
+				{
+					jotting.data.series && (
+						<a href={`${getRelativeLocaleUrl(locale, "/jotting")}?series=${encodeURIComponent(jotting.data.series)}`} class="link">
+							<Icon name="lucide--layers" />{jotting.data.series}
+						</a>
+					)
+				}
 				{
 					!!jotting.data.tags?.length && (
 						<span>

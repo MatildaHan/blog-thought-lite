@@ -30,18 +30,20 @@ let list = jottings.map(jotting => ({
 	data: {
 		title: jotting.data.title,
 		timestamp: jotting.data.timestamp,
+		series: jotting.data.series,
 		tags: jotting.data.tags,
 		sensitive: jotting.data.sensitive,
 		top: jotting.data.top
 	}
 }));
 
-// Extract all unique tags from the filtered notes
+// Extract all unique series and tags from published chapters.
+const series = Array.from(new Set(jottings.map(jotting => jotting.data.series).filter((series): series is string => Boolean(series)))).sort();
 const tags = Array.from(new Set(jottings.flatMap(jotting => jotting.data.tags).filter((tag): tag is string => Boolean(tag)))).sort();
 ---
 
 <Base title={t("navigation.jotting")} {locale}>
 	<main class="flex flex-col grow">
-		<Jotting client:load {locale} jottings={list} {tags} />
+		<Jotting client:load {locale} jottings={list} {series} {tags} />
 	</main>
 </Base>

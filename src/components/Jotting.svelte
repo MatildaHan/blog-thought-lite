@@ -6,7 +6,7 @@ import Icon from "$components/Icon.svelte";
 import Pagination from "$components/Pagination.svelte";
 import i18nit from "$i18n";
 
-let { locale, jottings, tags: tagList }: { locale: string; jottings: any[]; tags: string[] } = $props();
+let { locale, jottings, series: seriesList, tags: tagList }: { locale: string; jottings: any[]; series: string[]; tags: string[] } = $props();
 
 const t = i18nit(locale);
 
@@ -19,6 +19,7 @@ const size: number = config.pagination?.jotting || 24;
 let pages: number = $state(1);
 let page: number = $state(1);
 let pageParam: boolean = $state(false);
+let series: string | null = $state(null);
 let tags: string[] = $state([]);
 
 /**
@@ -38,18 +39,24 @@ function switchTag(tag: string, turn?: boolean) {
 	page = 1;
 }
 
+/** Select a single series, or clear the current selection. */
+function chooseSeries(choice: string, turn = series !== choice) {
+	series = turn ? choice : null;
+	pageParam = false;
+	page = 1;
+}
+
 /** Filtered and paginated list of jottings */
 let list: any[] = $derived.by(() => {
 	let filtered: any[] = jottings
-		// Check if jotting contains all specified tags
-		.filter(jotting => tags.every(tag => jotting.data.tags?.includes(tag)))
+		.filter(jotting => (!series || jotting.data.series === series) && tags.every(tag => jotting.data.tags?.includes(tag)))
 		// Sort by timestamp (newest first)
 		.sort((a, b) => b.data.top - a.data.top || b.data.timestamp.getTime() - a.data.timestamp.getTime());
 
 	untrack(() => {
 		// Ensure page is within valid range
-		pages = Math.ceil(filtered.length / size);
-		page = Math.max(1, Math.min(Math.floor(page), pages));
+		pages = Math.max(1, Math.ceil(filtered.length / size));
+		page = Math.max(1, Math.min(Number.isFinite(page) ? Math.floor(page) : 1, pages));
 	});
 
 	// Apply pagination by slicing the array
@@ -69,15 +76,18 @@ $effect(() => {
 			page = Number.isNaN(value) ? 1 : value;
 		}
 
+		series = params.get("series");
 		tags = params.getAll("tag");
 
 		initial = false;
 	} else {
 		// Build URL with current page, series, and tag filters using URLSearchParams
 		const url = new URL(window.location.href);
+		url.searchParams.delete("series");
 		url.searchParams.delete("tag");
 		url.searchParams.delete("page");
 
+		if (series) url.searchParams.set("series", series);
 		for (const tag of tags) url.searchParams.append("tag", tag);
 
 		if (page > 1) pageParam = true;
@@ -99,9 +109,13 @@ $effect(() => {
 						{#if jotting.data.sensitive}<Icon name="lucide--siren" title={t("sensitive.icon")} />{/if}
 						<a href={jotting.url} class="leading-normal text-primary font-semibold link truncate">{jotting.data.title}</a>
 					</span>
-					<span class="flex gap-1">
-						{#each jotting.data.tags as tag}
-							<button onclick={() => switchTag(tag, true)} class="text-[0.825rem] text-secondary">#{tag}</button>
+					<span class="flex flex-wrap items-center gap-1 text-[0.825rem] text-secondary">
+						{#if jotting.data.series}
+							<button onclick={() => chooseSeries(jotting.data.series, true)} aria-pressed={series === jotting.data.series}>{jotting.data.series}</button>
+							{#if jotting.data.tags?.length}<span aria-hidden="true">·</span>{/if}
+						{/if}
+						{#each jotting.data.tags ?? [] as tag}
+							<button onclick={() => switchTag(tag, true)} aria-pressed={tags.includes(tag)}>#{tag}</button>
 						{/each}
 					</span>
 				</section>
@@ -114,11 +128,21 @@ $effect(() => {
 	</article>
 
 	<aside class="sm:basis-50 shrink-0 flex flex-col gap-5">
+		{#if seriesList.length > 0}
+			<section>
+				<h4>{t("jotting.series")}</h4>
+				<p>
+					{#each seriesList as item (item)}
+						<button class:selected={series === item} onclick={() => chooseSeries(item)} aria-pressed={series === item}>{item}</button>
+					{/each}
+				</p>
+			</section>
+		{/if}
 		<section>
 			<h4>{t("jotting.tag")}</h4>
 			<p>
 				{#each tagList as tag (tag)}
-					<button class:selected={tags.includes(tag)} onclick={() => switchTag(tag)}>{tag}</button>
+					<button class:selected={tags.includes(tag)} onclick={() => switchTag(tag)} aria-pressed={tags.includes(tag)}>{tag}</button>
 				{/each}
 			</p>
 		</section>

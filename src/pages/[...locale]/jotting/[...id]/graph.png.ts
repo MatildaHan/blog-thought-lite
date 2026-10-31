@@ -26,6 +26,7 @@ export async function getStaticPaths() {
 				type: i18nit(locale || config.i18n.defaultLocale)(`navigation.jotting`),
 				title: jotting.data.title,
 				time: jotting.data.timestamp.toISOString().split("T")[0].replace(/-/g, "/"),
+				series: jotting.data.series,
 				tags: jotting.data.tags
 			}
 		};
@@ -43,6 +44,7 @@ export const GET: APIRoute = async ({ params, props }) => {
 		author: config.author.name,
 		title: props.title,
 		time: props.time,
+		series: props.series,
 		tags: props.tags
 	});
 

@@ -1,6 +1,6 @@
 # 免费评论区
 
-文记、絮语详情页使用与 ThoughtLite Cloudflare 版本相同的极简线框布局，包含昵称留言、回复、表情、Markdown 预览、本地草稿、分页与排序。界面改编自 [ThoughtLite cloudflare 分支](https://github.com/tuyuritio/astro-theme-thought-lite/tree/cloudflare)，保留 GPL-3.0 授权和主题署名。
+文记、篇章详情页使用与 ThoughtLite Cloudflare 版本相同的极简线框布局，包含昵称留言、回复、表情、Markdown 预览、本地草稿、分页与排序。界面改编自 [ThoughtLite cloudflare 分支](https://github.com/tuyuritio/astro-theme-thought-lite/tree/cloudflare)，保留 GPL-3.0 授权和主题署名。
 
 本站保留 Astro 静态构建，使用同一 Pages 项目的 Pages Functions + D1 + Turnstile 处理评论，无须迁移域名。支持昵称免登录留言及可选的 GitHub 登录。GitHub 登录同步公开头像、显示名称和 Bio，资料弹窗可设置个人主页；评论中的小房子链接指向该主页。博主标识按已验证的 GitHub 账号 ID 判断。未接入浏览器推送、邮件通知或独立管理后台，评论管理通过 Cloudflare D1 控制台完成。
 
@@ -32,7 +32,7 @@ comment: {
 6. 在 Pages 项目的生产环境变量/Secrets 中配置 `TURNSTILE_SITE_KEY` 和 `TURNSTILE_SECRET_KEY`。后者只保存在服务端 Secrets，不写入仓库，也不放进 `PUBLIC_*` 变量。
 7. 如通过现有 Git 集成部署，在 Pages 设置中新增 D1 绑定：变量名 `COMMENTS_DB`，数据库选择上面创建的实例。若使用 `wrangler.toml` 部署，则由该文件定义绑定。
 8. 执行 `pnpm build` 后运行 `pnpm deploy:pages`；也可以通过已有的 Pages Git 集成构建部署，构建命令为 `pnpm build`，产物目录 `dist`，根目录的 `functions/` 由 Pages 自动编译。
-9. 打开一篇文记或絮语，确认评论可加载、校验通过、留言刷新后仍然存在，再验证回复和关闭开关。
+9. 打开一篇文记或篇章，确认评论可加载、校验通过、留言刷新后仍然存在，再验证回复和关闭开关。
 
 `wrangler.toml`、`.dev.vars` 已忽略，不提交真实环境配置。`public/_routes.json` 仅让 `/api/comments` 和 `/api/auth/*` 使用 Function，其他静态页面和资源保持静态服务。
 
@@ -66,7 +66,7 @@ pnpm preview:comments
 
 ## 数据和保护
 
-- 只为构建产物中存在的公开文记、絮语接受评论；草稿和不存在的页面不能通过 API 留言或查询评论。
+- 只为构建产物中存在的公开文记、篇章接受评论；草稿和不存在的页面不能通过 API 留言或查询评论。
 - 评论内容存入 D1，读取按每页 20 条分页。客户端 Markdown 渲染丢弃 HTML，过滤危险链接，图片仅显示替代文字。
 - 服务端检查内容与昵称长度、来源、回复所属页面，并验证 Turnstile 的主机名和 `comment` action。
 - 每个 IP 每分钟最多接受 3 次通过人机校验的提交。数据库只保存按日加盐的 IP 摘要，用于短期限流，不保存原始 IP。过期记录随后续提交清理。

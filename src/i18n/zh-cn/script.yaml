@@ -11,7 +11,7 @@ new:
   error: 发生错误
   jotting:
     description: 简短的见解、零散的思考或日常的观察
-    name: 絮语
+    name: 篇章
   moment:
     description: 完整展示的一句话、几句话或生活片段，无需标题
     name: 瞬间

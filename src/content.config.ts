@@ -32,6 +32,7 @@ const jotting = defineCollection({
 	schema: z.object({
 		title: z.string(), // Jotting title (required)
 		timestamp: z.date(), // Publication date (required)
+		series: z.string().optional(), // Series name for grouped chapters
 		tags: z.array(z.string()).optional(), // Array of topic tags
 		description: z.string().optional(), // Brief description
 		sensitive: z.boolean().default(false), // Marks content as sensitive

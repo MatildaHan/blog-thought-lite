@@ -110,8 +110,8 @@ const CANCEL_MESSAGE = t("new.cancel");
 		// Exit if user cancels the input
 		isCancel(id) && (cancel(CANCEL_MESSAGE), process.exit(0));
 
-		// If content type is Note, allow user to specify a series
-		if (contentType === "note") {
+		// Notes and chapters can belong to a series.
+		if (contentType === "note" || contentType === "jotting") {
 			// Prompt user to input series name (optional)
 			const series = await text({
 				message: t("new.step.series.name"),
