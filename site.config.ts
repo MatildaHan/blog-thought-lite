@@ -4,12 +4,12 @@ import siteConfig from "./src/lib/config";
 const config = siteConfig({
 	// ── 基础信息 ──────────────────────────────
 	title: "须臾之间", // 站点标题，显示在浏览器标签、页头等位置
-	prologue: "May no regrets linger in the night bygone. May all shadows fade ere the dawn to come.",
+	prologue: "At the end of the story: "Hello," "Thank You," and the Final "Goodbye".",
 	// 站点副标题/开场白，通常显示在首页标题下方
-	// 愿昨日长夜不留遗憾，愿所有阴影在黎明前消散。
+	// 故事的最后是：你好，谢谢，最后是再见。
 
 	author: {
-		name: "北冥" // 作者名，用于文章署名、版权信息等
+		name: "Aranyaka" // 作者名，用于文章署名、版权信息等
 	},
 
 	description: "寄蜉蝣于天地，渺沧海之一粟。",
