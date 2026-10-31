@@ -4,7 +4,7 @@ import siteConfig from "./src/lib/config";
 const config = siteConfig({
 	// ── 基础信息 ──────────────────────────────
 	title: "须臾之间", // 站点标题，显示在浏览器标签、页头等位置
-	prologue: "At the end of the story: "Hello," "Thank You," and the Final "Goodbye".",
+	prologue: 'At the end of the story: "Hello," "Thank You," and the Final "Goodbye".',
 	// 站点副标题/开场白，通常显示在首页标题下方
 	// 故事的最后是：你好，谢谢，最后是再见。
 
