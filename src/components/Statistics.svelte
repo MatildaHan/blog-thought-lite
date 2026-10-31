@@ -29,10 +29,10 @@ onMount(() => {
 	<button type="button" aria-label={t("statistics.name")} aria-describedby={tooltipId} onmouseenter={() => (visible = true)} onmouseleave={() => (visible = false)} onfocus={() => (visible = true)} onblur={() => (visible = false)} onclick={() => (visible = true)} onkeydown={event => { if (event.key === "Escape") visible = false; }}>
 		<Icon name="lucide--activity" />
 	</button>
-	<span id={tooltipId} role="tooltip" class:visible class="tooltip rounded-sm py-1 px-1.5 text-xs font-serif font-normal leading-tight">
-		<span class="line"><span aria-hidden="true" class="bullet">•</span>{t("statistics.running", { count: days })}</span>
-		<span class="line"><span aria-hidden="true" class="bullet">•</span>{t("statistics.words", { count: totalWords })}</span>
-		<span class="line"><span aria-hidden="true" class="bullet">•</span>{t("statistics.updated", { date: updatedAt })}</span>
+	<span id={tooltipId} role="tooltip" class:visible class="tooltip rounded-sm py-2 px-1.5 text-xs font-serif font-normal leading-tight">
+		<span class="line"><span aria-hidden="true" class="bullet"></span>{t("statistics.running", { count: days })}</span>
+		<span class="line"><span aria-hidden="true" class="bullet"></span>{t("statistics.words", { count: totalWords })}</span>
+		<span class="line"><span aria-hidden="true" class="bullet"></span>{t("statistics.updated", { date: updatedAt })}</span>
 	</span>
 </div>
 
@@ -68,12 +68,16 @@ button {
 
 .line {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 6px;
 }
 
 .bullet {
 	flex-shrink: 0;
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: currentColor;
 }
 
 @media (max-width: 640px) {
