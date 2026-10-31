@@ -41,8 +41,6 @@ export default defineConfig({
 	trailingSlash: "never",
 	// Keep existing article links working after the content migration.
 	redirects: {
-		"/memo/2026-10": "/memo/202610",
-		"/memo/2026-10/graph.png": "/memo/202610/graph.png",
 		"/jotting/2026-09-18-113841": "/moment#moment-2026-09-18-113841",
 		"/jotting/2026-09-20-110541": "/moment#moment-2026-09-20-110541",
 		"/jotting/2026-09-20-225343": "/moment#moment-2026-09-20-225343",

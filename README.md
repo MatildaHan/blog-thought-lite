@@ -120,4 +120,4 @@ draft: true
 
 `series` 必须是带引号的四位年份字符串；`timestamp` 是内容发布时间，记录的日期写在正文小标题中。详情页沿用文章正文、目录、同年篇目、分享图和评论布局。首页最新内容、热力图、总字数和默认订阅源包含已发布纪年；`latest` / `feed.section` 可使用 `memo` 选择此板块，`pagination.memo` 控制每页篇数（默认 20）。草稿不生成详情和分享图，也不进入筛选、首页、字数、订阅源和评论清单。
 
-十月纪年内容维护于 `src/content/memo/202610.md`，页面地址为 `/memo/202610`；原排版示例已替换，旧地址 `/memo/2026-10` 会跳转至当前页面。副标题等需要展示的文字写在正文中。年份与筛选回归检查：`pnpm exec tsx --test tests/memo.test.ts`。
+十月纪年内容维护于 `src/content/memo/202610.md`，页面地址为 `/memo/202610`。新增月份直接创建新的 Markdown 文件，例如 `202611.md`，填写相应的 `title`、`timestamp` 和 `series` 即可，无须配置跳转。副标题等需要展示的文字写在正文中。年份与筛选回归检查：`pnpm exec tsx --test tests/memo.test.ts`。
