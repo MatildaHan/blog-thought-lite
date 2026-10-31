@@ -1,0 +1,10 @@
+# Copy to wrangler.toml, then fill in the ID returned by `pnpm exec wrangler d1 create thought-lite-comments`.
+name = "blog-thought-lite"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-10-30"
+
+[[d1_databases]]
+binding = "COMMENTS_DB"
+database_name = "thought-lite-comments"
+database_id = "REPLACE_WITH_YOUR_DATABASE_ID"
+migrations_dir = "migrations"

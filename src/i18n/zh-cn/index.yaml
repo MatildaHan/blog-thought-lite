@@ -1,0 +1,121 @@
+about:
+  introduction: 自述
+  linkroll: 友情链接
+contents: 目录
+home:
+  avatar: 白底黑色实心四角星与轨道头像
+  heatmap:
+    empty: 无字
+    jotting:
+      other: 絮语 {count} 则
+    moment:
+      other: 瞬间 {count} 则
+    note:
+      other: 文记 {count} 篇
+  latest: 最新内容
+  prefaces: 序文一览
+jotting:
+  empty: 暂无絮语
+  tag: 标签
+moment:
+  empty: 暂无瞬间
+  tag: 标签
+language: 简体中文
+navigation:
+  about: 自述
+  home: 序章
+  jotting: 絮语
+  moment: 瞬间
+  note: 文记
+  policy: 站点说明
+  preface: 序文
+note:
+  comment: 前往评论区
+  empty: 暂无文记
+  series: 系列
+  tag: 标签
+  top: 回到顶部
+read:
+  words:
+    other: '{count} 字'
+sensitive:
+  back: 返回列表
+  continue: 我已知晓，继续阅读
+  description: 本文可能包含色情、暴力、血腥或情绪触发内容。
+  feed: |
+    <p>本文可能包含色情、暴力、血腥或情绪触发内容。</p>
+    <p>如需阅读，请访问<a href="{link}">原文链接</a>。</p>
+  icon: 包含敏感内容
+  title: 内容警告
+  warning: 若这些内容可能影响您的心理健康，请立即离开！
+statistics:
+  other: 写下 {count} 字
+theme: '主题: ThoughtLite'
+
+interface:
+  openMenu: 打开菜单
+  closeMenu: 关闭菜单
+  subscription: 订阅更新
+  language: 切换语言
+  theme: 切换亮色与深色模式
+  openContents: 打开目录
+  closeContents: 关闭目录
+  poweredBy: 技术支持
+  framework: 网站框架
+  themeSource: 主题源码与署名
+  navigated: 已前往：{title}
+  pageUrl: 新页面位于 {url}
+license:
+  by: 署名 4.0 国际
+  bySa: 署名—相同方式共享 4.0 国际
+  byNc: 署名—非商业性使用 4.0 国际
+  byNcSa: 署名—非商业性使用—相同方式共享 4.0 国际
+  byNd: 署名—禁止演绎 4.0 国际
+  byNcNd: 署名—非商业性使用—禁止演绎 4.0 国际
+  zero: 公共领域贡献 1.0 通用
+error:
+  notFound: 页面未找到
+  server: 服务器内部错误
+  back: 返回序章
+comment:
+  auth:
+    login: 使用 GitHub 登录
+    logout: 退出登录
+    profile: 个人资料
+    author: 博主
+    homepage: 个人主页
+    save: 保存
+    close: 关闭
+    sync: 同步 GitHub 资料
+    source: 头像、昵称和简介来自 GitHub，重新登录即可同步。
+    failure: GitHub 登录或账号操作未完成，请重试。
+    invalidHomepage: 请填写有效的 http 或 https 网址，留空可移除主页链接。
+    signinToComment: 登录 GitHub 后即可留下想法。
+  name: 想法
+  form: 留下想法
+  placeholder: 于此留下想法
+  nickname: 昵称
+  emoji: 插入表情
+  submit: 发表
+  loading: 正在读取想法……
+  unavailable: 评论暂时无法使用，请稍后再来。
+  failure: 想法未能送达，内容已保留，请稍后重试。
+  success: 想法已送达
+  limit: 发表过于频繁，请一分钟后再试。
+  overlength: 已输入 {count} 字，最多可发表 {max} 字。
+  reply: 回复
+  replyTo: 回复 {name}
+  cancelReply: 取消回复
+  reload: 刷新想法
+  more: 查看更早的想法
+  fetch:
+    failure: 暂时无法读取想法，请点击刷新重试。
+  preview:
+    name: Markdown 预览
+    empty: 等待你的 Markdown 灵感
+  verify:
+    progress: 正在进行人机校验……
+    failure: 人机校验未完成，请点击刷新重试。
+  sort:
+    asc: 按时间升序排列
+    desc: 按时间降序排列

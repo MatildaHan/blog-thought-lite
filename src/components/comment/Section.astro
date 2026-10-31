@@ -1,0 +1,13 @@
+---
+import config from "$config";
+import { maxCommentLength } from "$lib/comments";
+import Comments from "./Section.svelte";
+
+interface Props {
+	locale: string;
+}
+
+const { locale } = Astro.props;
+---
+
+{config.comment?.enabled && <Comments {locale} path={Astro.url.pathname} maxLength={maxCommentLength(config.comment.maxLength)} client:visible />}

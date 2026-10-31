@@ -1,0 +1,37 @@
+---
+import { experimental_AstroContainer as AstroContainer } from "astro/container";
+import { getCollection, render } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import config, { monolocale } from "$config";
+import Base from "$layouts/Base.astro";
+import Moment from "$components/Moment.svelte";
+import Time from "$lib/time";
+import i18nit from "$i18n";
+
+export async function getStaticPaths() {
+	return config.i18n.locales.map(locale => ({ params: { locale: config.i18n.defaultLocale === locale ? undefined : locale } }));
+}
+
+const { locale = config.i18n.defaultLocale } = Astro.params;
+const t = i18nit(locale);
+const moments = await getCollection("moment", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === locale));
+const container = await AstroContainer.create();
+const list = await Promise.all(
+	moments.map(async entry => ({
+		id: `moment-${entry.id}`,
+		html: await container.renderToString((await render(entry)).Content),
+		timestamp: entry.data.timestamp,
+		time: Time.toDateTimeString(entry.data.timestamp),
+		tags: entry.data.tags,
+		sensitive: entry.data.sensitive
+	}))
+);
+const tags = Array.from(new Set(moments.flatMap(entry => entry.data.tags))).sort();
+---
+
+<Base title={t("navigation.moment")} {locale}>
+	<main class="flex flex-col grow">
+		<h1 class="sr-only">{t("navigation.moment")}</h1>
+		<Moment client:load {locale} moments={list} {tags} path={getRelativeLocaleUrl(locale, "/moment")} />
+	</main>
+</Base>
