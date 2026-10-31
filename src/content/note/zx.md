@@ -3,6 +3,7 @@ title: 翻来覆去折腾的一些非技术过程
 timestamp: 2026-09-18T00:00:00+08:00
 description: 记个人博客装修过程
 tags: ["非技术记录"]
+series: HelloWorld！
 draft: false
 top: 0
 ---
