@@ -137,3 +137,13 @@ test("Markdown supports formatting while removing executable markup and tracking
 	assert.ok(html.includes("noopener"));
 	assert.ok(!/javascript:|<script|<img|onerror=|evil\.example/.test(html));
 });
+
+test("published memo pages accept comments while draft memos remain unavailable", async t => {
+	verify(t);
+	const { env, sqlite } = fixture();
+	t.after(() => sqlite.close());
+	assert.equal((await handleComments(request("POST", "/memo/public", payload), env)).status, 201);
+	const page: CommentPage = await (await handleComments(request("GET", "/memo/public"), env)).json();
+	assert.equal(page.comments.length, 1);
+	assert.equal((await handleComments(request("GET", "/memo/draft"), env)).status, 404);
+});

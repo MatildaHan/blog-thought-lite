@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import config, { monolocale } from "$config";
+import Base from "$layouts/Base.astro";
+import Memo from "$components/Memo.svelte";
+import { memoYears } from "$lib/memo";
+import i18nit from "$i18n";
+
+export async function getStaticPaths() {
+	return config.i18n.locales.map(locale => ({ params: { locale: config.i18n.defaultLocale === locale ? undefined : locale } }));
+}
+
+const { locale = config.i18n.defaultLocale } = Astro.params;
+const t = i18nit(locale);
+const entries = await getCollection("memo", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === locale));
+const memos = entries.map(entry => ({
+	id: entry.id,
+	url: getRelativeLocaleUrl(locale, `/memo/${monolocale ? entry.id : entry.id.split("/").slice(1).join("/")}`),
+	title: entry.data.title,
+	series: entry.data.series,
+	timestamp: entry.data.timestamp
+}));
+const years = memoYears(memos);
+---
+
+<Base title={t("navigation.memo")} {locale}>
+	<main class="flex flex-col grow">
+		<h1 class="sr-only">{t("navigation.memo")}</h1>
+		<Memo client:load {locale} {memos} {years} />
+	</main>
+</Base>

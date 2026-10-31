@@ -31,7 +31,7 @@ export function fixture() {
 			prepare: (sql: string) => new Statement(sql),
 			batch: async (statements: Statement[]) => Promise.all(statements.map(statement => statement.run()))
 		} as unknown as D1Database,
-		ASSETS: { fetch: async () => Response.json(["/note/public", "/jotting/public"]) } as unknown as Fetcher,
+		ASSETS: { fetch: async () => Response.json(["/note/public", "/jotting/public", "/memo/public"]) } as unknown as Fetcher,
 		TURNSTILE_SITE_KEY: "test-site-key",
 		TURNSTILE_SECRET_KEY: "test-secret"
 	};

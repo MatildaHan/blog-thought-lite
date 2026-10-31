@@ -222,3 +222,11 @@ test("homepage normalization handles GitHub's bare domain while rejecting execut
 	assert.equal(normalizeHomepage("javascript:alert(1)"), null);
 	assert.equal(normalizeHomepage(""), "");
 });
+
+test("GitHub login returns to the original memo detail", async t => {
+	const { env } = setup(t);
+	mockGithub(t);
+	const transaction = await begin(env, "/memo/public");
+	const result = await complete(env, transaction);
+	assert.equal(result.response.headers.get("Location"), "https://blog.example/memo/public#comments");
+});

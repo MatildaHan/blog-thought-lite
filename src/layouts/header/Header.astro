@@ -18,6 +18,7 @@ const routes: { path: string; extra?: string[]; icon: `${string}--${string}`; la
 	{ label: t("navigation.note"), path: getRelativeLocaleUrl(locale, "/note"), icon: "lucide--list" },
 	{ label: t("navigation.jotting"), path: getRelativeLocaleUrl(locale, "/jotting"), icon: "lucide--feather" },
 	{ label: t("navigation.moment"), path: getRelativeLocaleUrl(locale, "/moment"), icon: "lucide--message-circle" },
+	{ label: t("navigation.memo"), path: getRelativeLocaleUrl(locale, "/memo"), icon: "lucide--calendar-days" },
 	{ label: t("navigation.about"), path: getRelativeLocaleUrl(locale, "/about"), icon: "lucide--hat-glasses" }
 ];
 
@@ -55,7 +56,7 @@ const route = Astro.url.pathname;
 	<div id="sidebar-overlay" aria-hidden="true" class="sm:hidden fixed top-0 inset-s-0 w-screen h-screen transition-[background-color]"></div>
 
 	<nav id="sidebar" class="fixed top-0 inset-e-0 flex flex-col justify-between items-start gap-5 p-5 bg-background h-full sm:contents overflow-hidden transition-transform">
-		<header class="grid gap-5 sm:text-secondary grid-rows-[repeat(6,1fr)] sm:grid-rows-none sm:grid-cols-[repeat(5,1fr)]">
+		<header class="grid gap-5 sm:gap-2 md:gap-5 sm:text-secondary grid-rows-[repeat(7,1fr)] sm:grid-rows-none sm:grid-cols-[repeat(6,1fr)]">
 			<button id="sidebar-close" aria-label={t("interface.closeMenu")} class="sm:hidden"><Icon name="lucide--x" /></button>
 			<Navigator {route} {routes} client:load />
 		</header>

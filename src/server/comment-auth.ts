@@ -98,7 +98,7 @@ function returnPath(request: Request, value: string | null): string {
 	const origin = new URL(request.url).origin;
 	try {
 		const url = new URL(value, origin);
-		return url.origin === origin && /^\/(note|jotting)\//.test(url.pathname) ? url.pathname : "/";
+		return url.origin === origin && /^\/(note|jotting|memo)\//.test(url.pathname) ? url.pathname : "/";
 	} catch {
 		return "/";
 	}

@@ -104,7 +104,12 @@ const momentWords = (await Promise.all(moments.map(async entry => (await render(
 	(summary, words) => summary + words,
 	0
 );
-const totalWords = noteWords + jottingWords + momentWords;
+const memos = await getCollection("memo", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === locale));
+const memoWords = (await Promise.all(memos.map(async entry => (await render(entry)).remarkPluginFrontmatter.words))).reduce(
+	(summary, words) => summary + words,
+	0
+);
+const totalWords = noteWords + jottingWords + momentWords + memoWords;
 
 let updatedAt = config.statistics?.updatedAt;
 if (config.statistics) {

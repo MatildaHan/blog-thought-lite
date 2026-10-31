@@ -54,6 +54,21 @@ const moment = defineCollection({
 	})
 });
 
+/** Monthly chronicles, with the year stored as the series. */
+const memo = defineCollection({
+	loader: glob({ pattern: ["**/*.md", "!**/_*.md", "!**/_*/*.md"], base: "./src/content/memo" }),
+	schema: z.object({
+		title: z.string().trim().min(1),
+		timestamp: z.date(),
+		series: z.string().regex(/^\d{4}$/),
+		tags: z.array(z.string()).default([]),
+		description: z.string().optional(),
+		sensitive: z.boolean().default(false),
+		toc: z.boolean().default(true),
+		draft: z.boolean().default(false)
+	})
+});
+
 /**
  * Preface collection configuration
  * Represents introductory content, site announcements, or special pages
@@ -75,4 +90,4 @@ const information = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx,yaml}", base: "./src/content/information" })
 });
 
-export const collections = { note, jotting, moment, preface, information };
+export const collections = { note, jotting, moment, memo, preface, information };

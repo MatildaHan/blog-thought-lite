@@ -6,7 +6,7 @@ type CCLicenseType = "CC0 1.0" | "CC BY 4.0" | "CC BY-SA 4.0" | "CC BY-NC 4.0" |
 /**
  * Content Section Type
  */
-export type Section = "note" | "jotting" | "moment";
+export type Section = "note" | "jotting" | "moment" | "memo";
 
 interface SiteConfigOptions<Locales extends readonly string[] = readonly string[]> {
 	/** Site Title */
@@ -106,7 +106,7 @@ interface SiteConfigOptions<Locales extends readonly string[] = readonly string[
 	/** Latest Content Display */
 	latest?: "*" | Section[];
 
-	/** Guest comments on published notes and jottings. */
+	/** Comments on published notes, chapters and memos. */
 	comment?: {
 		/** Hide the section and reject API requests when false. Rebuild to apply. */
 		enabled: boolean;

@@ -15,7 +15,7 @@ pnpm dev
 
 | 命令 | 用途 |
 | --- | --- |
-| `pnpm new` | 交互式创建中文文记、篇章、瞬间或序文 |
+| `pnpm new` | 交互式创建中文文记、篇章、瞬间、纪年或序文 |
 | `pnpm check` | 检查类型与内容 |
 | `pnpm build` | 生成静态站点到 `dist/` |
 | `pnpm preview` | 预览构建结果 |
@@ -25,11 +25,12 @@ pnpm dev
 
 站点使用中文单语言模式，内容直接放在各板块目录下，无须语言子目录。
 
-导航名称为「序章」「文记」「篇章」「瞬间」「自述」，对应路径分别为 `/`、`/note`、`/jotting`、`/moment`、`/about`。名称由 `src/i18n/zh-cn/index.yaml` 统一管理，供桌面和移动导航、页面标题、分享图及相关提示使用；写作工具文案位于同目录的 `script.yaml`。
+导航名称为「序章」「文记」「篇章」「瞬间」「纪年」「自述」，对应路径分别为 `/`、`/note`、`/jotting`、`/moment`、`/memo`、`/about`。名称由 `src/i18n/zh-cn/index.yaml` 统一管理，供桌面和移动导航、页面标题、分享图及相关提示使用；写作工具文案位于同目录的 `script.yaml`。
 
 - `src/content/note/`：文记。
 - `src/content/jotting/`：篇章。
 - `src/content/moment/`：瞬间，正文直接在单列列表完整展示，不生成详情页。
+- `src/content/memo/`：纪年，`series` 为年份，`title` 为月份名称。
 - `src/content/preface/`：序章页序文，按时间显示最新一篇。
 - `src/content/information/`：自述与站点说明。
 - `src/i18n/zh-cn/`：界面和写作工具的中文文案。
@@ -99,4 +100,24 @@ draft: false
 
 评论区配置、总开关与免费 Cloudflare Pages Functions / D1 / Turnstile 接入步骤见 [评论区说明](docs/comments.md)。
 
-页脚统计图标在悬浮、键盘聚焦或点击时显示三行信息：已运行天数、已发布文记／篇章／瞬间的正文总字数，以及上次更新日期。浮层沿用原提示框的 12px 字号，黑底白字、逐行小圆点、左对齐；按 Escape 或移开焦点可关闭。`site.config.ts` 的 `statistics.startedAt` 是带时区的正式上线时间，运行天数按满 24 小时累计，浏览器每分钟刷新一次。上次更新取构建所用最近一次 Git 提交的时间，并按站点时区显示为 `YYYY-MM-DD`；没有 Git 信息时使用 `statistics.updatedAt`，不以重新构建时间代替更新日期。
+页脚统计图标在悬浮、键盘聚焦或点击时显示三行信息：已运行天数、已发布文记／篇章／瞬间／纪年的正文总字数，以及上次更新日期。浮层沿用原提示框的 12px 字号，黑底白字、逐行小圆点、左对齐；按 Escape 或移开焦点可关闭。`site.config.ts` 的 `statistics.startedAt` 是带时区的正式上线时间，运行天数按满 24 小时累计，浏览器每分钟刷新一次。上次更新取构建所用最近一次 Git 提交的时间，并按站点时区显示为 `YYYY-MM-DD`；没有 Git 信息时使用 `statistics.updatedAt`，不以重新构建时间代替更新日期。
+
+### 纪年
+
+导航入口为 `/memo`，列表仅显示 `2026｜十月` 这样的标题链接，无额外页内大标题、摘要、时间或标签。列表字号、字重、行距和虚线与瞬间一致；桌面在右侧筛选年份，手机在列表上方筛选。年份从当前语言已发布内容的 `series` 自动去重、倒序生成；新增 `series: "2027"` 的内容后，重新构建部署即可出现 2027，无须修改菜单代码。点击已选年份取消筛选，切换年份回到第一页，地址以 `?series=2026&page=2` 保留筛选和页码。
+
+新增文件 `src/content/memo/2027-01.md`，或运行 `pnpm new` 选择「纪年」：
+
+```yaml
+---
+title: 一月
+timestamp: 2027-01-31 00:00:00+08:00
+series: "2027"
+toc: true
+draft: true
+---
+```
+
+`series` 必须是带引号的四位年份字符串；`timestamp` 是内容发布时间，记录的日期写在正文小标题中。详情页沿用文章正文、目录、同年篇目、分享图和评论布局。首页最新内容、热力图、总字数和默认订阅源包含已发布纪年；`latest` / `feed.section` 可使用 `memo` 选择此板块，`pagination.memo` 控制每页篇数（默认 20）。草稿不生成详情和分享图，也不进入筛选、首页、字数、订阅源和评论清单。
+
+初始公开的 `2026-10.md` 是经确认发布的排版示例，正文已明确标注，不代表作者的真实经历，可直接替换或删除。年份与筛选回归检查：`pnpm exec tsx --test tests/memo.test.ts`。

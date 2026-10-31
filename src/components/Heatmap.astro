@@ -26,9 +26,10 @@ interface Props {
 	notes: ContentItem[];
 	jottings: ContentItem[];
 	moments: ContentItem[];
+	memos: ContentItem[];
 }
 
-let { locale, notes, jottings, moments } = Astro.props;
+let { locale, notes, jottings, moments, memos } = Astro.props;
 
 // Initialize translation function for current locale
 const t = i18nit(locale);
@@ -67,6 +68,15 @@ moments.forEach(moment => {
 		title: moment.data.title,
 		date: Time(moment.data.timestamp).toPlainDate(),
 		link: momentUrl(locale, moment.id)
+	});
+});
+
+memos.forEach(memo => {
+	contents.push({
+		section: "memo",
+		title: memo.data.title,
+		date: Time(memo.data.timestamp).toPlainDate(),
+		link: getRelativeLocaleUrl(locale, `/memo/${monolocale ? memo.id : memo.id.split("/").slice(1).join("/")}`)
 	});
 });
 
@@ -141,6 +151,13 @@ if (frequency === "month") {
 				const notes = cell.contents.filter(content => content.section === "note");
 				const jottings = cell.contents.filter(content => content.section === "jotting");
 				const moments = cell.contents.filter(content => content.section === "moment");
+				const memos = cell.contents.filter(content => content.section === "memo");
+				if (memos.length) {
+					details.push(<p class="my-1">{t("home.heatmap.memo", { count: memos.length })}{frequency !== "month" && "："}</p>);
+					if (frequency !== "month") {
+						details.push(<ul class="flex flex-col gap-0.5">{memos.map(memo => <li><a href={memo.link} aria-label={memo.title} class="ms-1 link">{memo.title}</a></li>)}</ul>);
+					}
+				}
 
 				if (notes.length) {
 					if (frequency === "month") {

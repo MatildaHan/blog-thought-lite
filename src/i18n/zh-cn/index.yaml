@@ -12,6 +12,8 @@ home:
       other: 瞬间 {count} 则
     note:
       other: 文记 {count} 篇
+    memo:
+      other: 纪年 {count} 篇
   latest: 最新内容
   prefaces: 序文一览
 jotting:
@@ -21,12 +23,17 @@ jotting:
 moment:
   empty: 暂无瞬间
   tag: 标签
+memo:
+  empty: 暂无纪年
+  year: 年份
+  back: 返回纪年
 language: 简体中文
 navigation:
   about: 自述
   home: 序章
   jotting: 篇章
   moment: 瞬间
+  memo: 纪年
   note: 文记
   policy: 站点说明
   preface: 序文

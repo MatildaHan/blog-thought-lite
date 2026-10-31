@@ -1,0 +1,102 @@
+---
+import { getCollection, render } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import config, { monolocale } from "$config";
+import Time from "$lib/time";
+import Base from "$layouts/Base.astro";
+import TOC from "$components/TOC.astro";
+import Position from "$components/Position.astro";
+import Icon from "$components/Icon.svelte";
+import Sensitive from "$components/Sensitive.svelte";
+import Comments from "$components/comment/Section.astro";
+import i18nit from "$i18n";
+
+export async function getStaticPaths() {
+	// Get all memos excluding drafts
+	const memos = await getCollection("memo", memo => !memo.data.draft);
+
+	return memos.map(memo => {
+		let locale: string | undefined;
+		let id: string;
+
+		if (monolocale) {
+			locale = undefined;
+			id = memo.id;
+		} else {
+			// Extract language and memo ID from file path structure
+			const [language, ...ids] = memo.id.split("/");
+
+			locale = config.i18n.defaultLocale === language ? undefined : language;
+			id = ids.join("/");
+		}
+
+		// Generate path params with optional locale (omit for default locale)
+		return { params: { locale, id }, props: { memo } };
+	});
+}
+
+const { locale = config.i18n.defaultLocale } = Astro.params;
+const { memo } = Astro.props;
+
+// Render markdown content and extract headings for TOC
+const { Content, headings, remarkPluginFrontmatter: frontmatter } = await render(memo);
+
+const series = memo.data.series
+	? (
+			await getCollection(
+				"memo",
+				item => !item.data.draft && item.data.series === memo.data.series && (monolocale || item.id.startsWith(`${locale}/`))
+			)
+		)
+			.sort((a, b) => a.data.timestamp.getTime() - b.data.timestamp.getTime())
+			.map(item => ({
+				title: item.data.title,
+				url: getRelativeLocaleUrl(locale, `/memo/${monolocale ? item.id : item.id.split("/").slice(1).join("/")}`),
+				current: item.id === memo.id
+			}))
+	: undefined;
+
+const t = i18nit(locale);
+---
+
+<Base title={`${memo.data.series}｜${memo.data.title}`} {locale} description={memo.data.description} article={{ timestamp: memo.data.timestamp, section: memo.data.series, tags: memo.data.tags }}>
+	<main class="flex flex-col gap-6">
+		<header class="flex flex-col gap-4">
+			<a href={getRelativeLocaleUrl(locale, "/memo")} class="self-start text-sm text-secondary link">{t("memo.back")}</a>
+			<h1 class="select-text">{memo.data.series}｜{memo.data.title}</h1>
+			<div class="flex flex-col gap-3 sm:flex-row *:flex *:items-center *:gap-1 *:text-[0.875rem] *:text-secondary">
+				<time datetime={memo.data.timestamp.toISOString()}><Icon name="lucide--calendar" />{Time.toString(memo.data.timestamp)}</time>
+				{
+					memo.data.series && (
+						<span>
+							<Icon name="lucide--layers" />
+							{memo.data.series}
+						</span>
+					)
+				}
+				{
+					!!memo.data.tags?.length && (
+						<span>
+							<Icon name="lucide--hash" />
+							{memo.data.tags?.join("; ")}
+						</span>
+					)
+				}
+				<span><Icon name="lucide--pilcrow" />{t("read.words", { count: frontmatter.words })}</span>
+			</div>
+			<hr class="border-b border-weak" />
+		</header>
+
+		<Sensitive {locale} back={getRelativeLocaleUrl(locale, "/memo")} sensitive={memo.data.sensitive} client:load>
+			<div class="contents">
+				<div class="flex gap-5">
+					<section id="markdown-content" class="markdown"><Content /></section>
+					{(memo.data.toc || !!memo.data.series) && <TOC headings={memo.data.toc ? headings : undefined} {locale} {series} />}
+				</div>
+			</div>
+		</Sensitive>
+
+		<Comments {locale} />
+		<Position {locale} toc={memo.data.toc} series={!!memo.data.series} comment={config.comment?.enabled} />
+	</main>
+</Base>

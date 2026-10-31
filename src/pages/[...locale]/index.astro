@@ -60,6 +60,8 @@ const jottings = await getCollection("jotting", jotting => {
 // Combine contents
 const moments = await getCollection("moment", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === locale));
 const momentItems = moments.map(entry => ({ ...entry, type: "moment", data: { ...entry.data, title: momentTitle(entry, locale) } }));
+const memos = await getCollection("memo", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === locale));
+const memoItems = memos.map(entry => ({ ...entry, type: "memo" }));
 
 let items: { id: string; type?: string; data: { timestamp: Date; tags?: string[]; [key: string]: any } }[] = [];
 
@@ -70,6 +72,7 @@ const sections = config.latest || "*";
 if (sections === "*" || sections.includes("note")) items = items.concat(notes);
 if (sections === "*" || sections.includes("jotting")) items = items.concat(jottings);
 if (sections === "*" || sections.includes("moment")) items = items.concat(momentItems);
+if (sections === "*" || sections.includes("memo")) items = items.concat(memoItems);
 
 // Get the latest content for display
 const latest = items.sort((a, b) => b.data.timestamp.getTime() - a.data.timestamp.getTime())[0];
@@ -103,7 +106,7 @@ const { Content } = preface ? await render(preface) : ({} as any);
 		{
 			latest && (
 				<footer class="flex items-center justify-center flex-wrap-reverse gap-10">
-					<Heatmap {locale} {notes} {jottings} moments={momentItems} />
+					<Heatmap {locale} {notes} {jottings} moments={momentItems} {memos} />
 
 					<blockquote class="grow flex flex-col">
 						<h4>{t("home.latest")}</h4>

@@ -16,6 +16,9 @@ new:
     description: 完整展示的一句话、几句话或生活片段，无需标题
     name: 瞬间
     start: 在此写下一句话或几句话……
+  memo:
+    name: 纪年
+    description: 按年份系列整理的月度记录，标题可填写“十月”
   note:
     description: 具有深度，经过深思熟虑的长篇作品
     name: 文记
@@ -47,6 +50,9 @@ new:
     series:
       name: 所属系列（可选）
       placeholder: 如果不属于任意一个系列，请忽略
+    year:
+      name: 纪年所属年份
+      validate: 请填写四位年份，例如 2027。
     structure:
       flat: 单一 Markdown 文件
       folder: 带有索引文件的文件夹（用于包含图片）

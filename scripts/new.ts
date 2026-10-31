@@ -27,6 +27,7 @@ const CANCEL_MESSAGE = t("new.cancel");
 			{ label: t("new.note.name"), value: "note", hint: t("new.note.description") },
 			{ label: t("new.jotting.name"), value: "jotting", hint: t("new.jotting.description") },
 			{ label: t("new.moment.name"), value: "moment", hint: t("new.moment.description") },
+			{ label: t("new.memo.name"), value: "memo", hint: t("new.memo.description") },
 			{ label: t("new.preface.name"), value: "preface", hint: t("new.preface.description") }
 		]
 	});
@@ -110,6 +111,17 @@ const CANCEL_MESSAGE = t("new.cancel");
 		// Exit if user cancels the input
 		isCancel(id) && (cancel(CANCEL_MESSAGE), process.exit(0));
 
+		if (contentType === "memo") {
+			const year = await text({
+				message: t("new.step.year.name"),
+				initialValue: timestamp.slice(0, 4),
+				validate: value => (/^\d{4}$/.test(value ?? "") ? undefined : t("new.step.year.validate"))
+			});
+			isCancel(year) && (cancel(CANCEL_MESSAGE), process.exit(0));
+			information.series = JSON.stringify(year);
+			information.toc = true;
+		}
+
 		// Notes and chapters can belong to a series.
 		if (contentType === "note" || contentType === "jotting") {
 			// Prompt user to input series name (optional)
@@ -155,7 +167,7 @@ const CANCEL_MESSAGE = t("new.cancel");
 			options: [
 				{ label: t("new.step.options.draft"), value: "draft" },
 				...(contentType === "note" ? [{ label: t("new.step.options.toc"), value: "toc" }] : []),
-				...(contentType !== "moment" ? [{ label: t("new.step.options.top"), value: "top" }] : []),
+				...(contentType === "note" || contentType === "jotting" ? [{ label: t("new.step.options.top"), value: "top" }] : []),
 				{ label: t("new.step.options.sensitive"), value: "sensitive" }
 			],
 			initialValues: ["draft"],

@@ -88,6 +88,15 @@ export const GET: APIRoute = async ({ site, params }) => {
 		items.push(...moments);
 	}
 
+	if (sections === "*" || sections.includes("memo")) {
+		const memos = await getCollection("memo", entry => !entry.data.draft && (monolocale || entry.id.split("/")[0] === language));
+		memos.forEach(entry => {
+			const id = monolocale ? entry.id : entry.id.split("/").slice(1).join("/");
+			Reflect.set(entry, "link", new URL(getRelativeLocaleUrl(language, `/memo/${id}`), site).toString());
+		});
+		items.push(...memos);
+	}
+
 	// Sort all items by timestamp and limit to configured number
 	items = items
 		.sort((a, b) => b.data.timestamp.getTime() - a.data.timestamp.getTime()) // Sort by newest first
@@ -110,8 +119,13 @@ export const GET: APIRoute = async ({ site, params }) => {
 	// Add each filtered note as a feed item
 	items.forEach(item => {
 		feed.addItem({
-			id: item.collection === "moment" ? (<any>item).link : item.id, // Moments link to anchors on the list
-			title: item.collection === "moment" ? momentTitle(item, language) : item.data.title,
+			id: item.collection === "moment" || item.collection === "memo" ? (<any>item).link : item.id,
+			title:
+				item.collection === "moment"
+					? momentTitle(item, language)
+					: item.collection === "memo"
+						? `${item.data.series}｜${item.data.title}`
+						: item.data.title,
 			link: (<any>item).link, // URL to the post
 			date: item.data.timestamp, // Publication date
 			content: item.data.sensitive ? t("sensitive.feed", { link: (<any>item).link }) : item.rendered?.html, // Rendered content

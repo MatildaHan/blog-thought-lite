@@ -6,7 +6,7 @@ import config, { monolocale } from "$config";
 export async function GET() {
 	const paths: string[] = [];
 	if (config.comment?.enabled) {
-		for (const section of ["note", "jotting"] as const) {
+		for (const section of ["note", "jotting", "memo"] as const) {
 			const entries = await getCollection(section, entry => !entry.data.draft);
 			for (const entry of entries) {
 				const [language, ...segments] = entry.id.split("/");
