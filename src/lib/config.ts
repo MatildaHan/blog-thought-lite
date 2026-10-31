@@ -42,6 +42,13 @@ interface SiteConfigOptions<Locales extends readonly string[] = readonly string[
 	/** Timezone Configuration */
 	timezone?: string;
 
+	/** Footer statistics, with explicit timezone offsets. */
+	statistics?: {
+		startedAt: string;
+		/** Last-update fallback for builds without Git metadata. */
+		updatedAt: string;
+	};
+
 	/** Internationalization Configuration */
 	i18n: {
 		/** Supported Locales */

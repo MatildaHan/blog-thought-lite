@@ -98,3 +98,5 @@ draft: false
 本项目基于 tuyuritio 的 [ThoughtLite](https://github.com/tuyuritio/astro-theme-thought-lite) 主题，源代码遵循 [GPL-3.0](LICENSE)。保留主题署名与原有版权，不将第三方图片视为博主作品。
 
 评论区配置、总开关与免费 Cloudflare Pages Functions / D1 / Turnstile 接入步骤见 [评论区说明](docs/comments.md)。
+
+页脚统计图标在悬浮、键盘聚焦或点击时显示三行信息：已运行天数、已发布文记／篇章／瞬间的正文总字数，以及上次更新日期。浮层沿用原提示框的 12px 字号，黑底白字、逐行小圆点、左对齐；按 Escape 或移开焦点可关闭。`site.config.ts` 的 `statistics.startedAt` 是带时区的正式上线时间，运行天数按满 24 小时累计，浏览器每分钟刷新一次。上次更新取构建所用最近一次 Git 提交的时间，并按站点时区显示为 `YYYY-MM-DD`；没有 Git 信息时使用 `statistics.updatedAt`，不以重新构建时间代替更新日期。

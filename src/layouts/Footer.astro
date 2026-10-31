@@ -1,8 +1,12 @@
 ---
+import { execFileSync } from "node:child_process";
 import { getCollection, getEntry, render } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { monolocale } from "$config";
+import config, { monolocale } from "$config";
 import Icon from "$components/Icon.svelte";
+import Statistics from "$components/Statistics.svelte";
+import { runningDays } from "$lib/statistics";
+import Time from "$lib/time";
 import i18nit from "$i18n";
 
 let { locale, author, copyright } = Astro.props;
@@ -102,6 +106,16 @@ const momentWords = (await Promise.all(moments.map(async entry => (await render(
 );
 const totalWords = noteWords + jottingWords + momentWords;
 
+let updatedAt = config.statistics?.updatedAt;
+if (config.statistics) {
+	try {
+		updatedAt = execFileSync("git", ["log", "-1", "--format=%cI"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || updatedAt;
+	} catch {
+		// Source archives can use the explicit fallback instead of a build date.
+	}
+}
+const lastUpdated = updatedAt ? Time.toDateString(updatedAt).replaceAll("/", "-") : "";
+
 // Check if policy file exists for current locale
 const localePrefix = monolocale ? "" : `${locale}/`;
 const policy = await getEntry("information", `${localePrefix}policy`);
@@ -123,7 +137,13 @@ const policy = await getEntry("information", `${localePrefix}policy`);
 			{ccIcons.map(icon => <Icon name={icon} />)}
 		</a>
 		<span>·</span>
-		<Icon name="lucide--activity" title={t("statistics", { count: totalWords })} />
+		{
+			config.statistics ? (
+				<Statistics {locale} startedAt={config.statistics.startedAt} initialDays={runningDays(config.statistics.startedAt)} {totalWords} updatedAt={lastUpdated} client:load />
+			) : (
+				<Icon name="lucide--activity" title={t("statistics.words", { count: totalWords })} />
+			)
+		}
 		{
 			policy && (
 				<>

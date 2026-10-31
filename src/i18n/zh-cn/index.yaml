@@ -50,7 +50,10 @@ sensitive:
   title: 内容警告
   warning: 若这些内容可能影响您的心理健康，请立即离开！
 statistics:
-  other: 写下 {count} 字
+  name: 站点统计
+  running: 已运行 {count} 天
+  words: 写下 {count} 字
+  updated: 上次更新 {date}
 theme: '主题: ThoughtLite'
 
 interface:

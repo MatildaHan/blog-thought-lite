@@ -24,6 +24,10 @@ const config = siteConfig({
 
 	// ── 本地化 ────────────────────────────────
 	timezone: "Asia/Shanghai", // 站点时区，影响文章发布时间、归档分组等显示
+	statistics: {
+		startedAt: "2026-10-30T00:00:00+08:00", // 正式上线时间，按已运行满的天数计算
+		updatedAt: "2026-10-31T00:00:00+08:00" // 无 Git 信息时的更新日期；通常自动读取最近一次提交
+	},
 	i18n: {
 		locales: ["zh-cn"], // 支持的语言列表，这里只有简体中文
 		defaultLocale: "zh-cn" // 默认语言
