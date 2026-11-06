@@ -4,7 +4,6 @@ description: "啦啦啦啦啦啦啦啦"
 timestamp: 2026-11-06T11:38:00+08:00
 tags: [ "超时空对话"]
 draft: false
-slug: "daily-life-1"
 ---
 
 最近在看五十公里桃花坞，看到一集超时空对话，说给平行时空的任何人。
