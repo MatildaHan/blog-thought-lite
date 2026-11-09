@@ -2,7 +2,7 @@
 title: "孤独怎么会是惩罚"
 description: "啦啦啦啦啦啦啦啦"
 timestamp: 2026-11-09T14:20:00+08:00
-tags: [ "平凡之路"]
+tags: [ "周末如何"]
 draft: false
 ---
 
